@@ -2,6 +2,7 @@ package ru.levspb.logic;
 
 import ru.levspb.enums.FieldsName;
 import ru.levspb.model.CellOfField;
+import ru.levspb.view.FieldButton;
 
 import static ru.levspb.model.Field.*;
 
@@ -60,6 +61,11 @@ public class PrintField {
                 if (i >= 0 && j >= 0 && i < FIELD.getWidth() && j < FIELD.getLength() &&
                         SHIP_FIELD != FIELD.getField()[i][j] && SHOT_FIELD != FIELD.getField()[i][j]) {
                     FIELD.getField()[i][j] = SHOT_FIELD;
+                    String field = FieldsName.getByValue(j) + "" + (i + 1);
+                    FieldButton button = buttonsMap.get(field);
+                    if (button != null) {
+                        button.setTransparent();
+                    }
                 }
             }
         }

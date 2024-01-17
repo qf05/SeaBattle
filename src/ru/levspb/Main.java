@@ -1,38 +1,19 @@
 package ru.levspb;
 
-import ru.levspb.enums.ShipSize;
-import ru.levspb.enums.ShotResult;
 import ru.levspb.logic.GameLogic;
-import ru.levspb.logic.PrintField;
-import ru.levspb.model.Field;
+import ru.levspb.view.DesktopView;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
-
-import static ru.levspb.enums.ShipSize.*;
+import javax.swing.*;
 
 public class Main {
+    private static int width = 10;
+    private static int length = 10;
+    private static int fourDecker = 1;
+    private static int threeDecker = 2;
+    private static int twoDecker = 3;
+    private static int oneDecker = 4;
     public static void main(String[] args) {
-        Field.instanceField(10, 10);
-        Map<ShipSize, Integer> ships = new HashMap<>();
-        ships.put(FOUR_DECKER, 2);
-        ships.put(THREE_DECKER, 2);
-        ships.put(TWO_DECKER, 3);
-        ships.put(ONE_DECKER, 4);
-        GameLogic.initShips(ships);
-        Scanner scanner = new Scanner(System.in);
-        int moves = 0;
-        while (true) {
-            PrintField.printField();
-            String shot = scanner.next();
-            moves++;
-            if (ShotResult.END_OF_GAME == GameLogic.shot(shot)) {
-                break;
-            }
-        }
-        PrintField.printField();
-        System.out.println("CONGRATULATIONS!!!");
-        System.out.println("You won in " + moves + " moves.");
+        GameLogic.startGame(width, length, fourDecker, threeDecker, twoDecker, oneDecker);
+        DesktopView.openWindow(width,length);
     }
 }

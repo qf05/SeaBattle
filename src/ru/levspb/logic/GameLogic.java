@@ -3,10 +3,15 @@ package ru.levspb.logic;
 import ru.levspb.enums.ShipSize;
 import ru.levspb.enums.ShotResult;
 import ru.levspb.model.CellOfField;
+import ru.levspb.model.Field;
 import ru.levspb.model.Ship;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
+import static ru.levspb.enums.ShipSize.*;
 import static ru.levspb.enums.ShotResult.*;
 import static ru.levspb.model.Field.*;
 
@@ -18,16 +23,36 @@ public class GameLogic {
     private GameLogic() {
     }
 
-    public static void initShips(Map<ShipSize, Integer> shipsMap) {
+    public static void startGame(int width, int length, int fourDeckerCount, int treeDeckerCount, int twoDeckerCount, int oneDeckerCount) {
+        Field.instanceField(width, length);
+        Map<ShipSize, Integer> ships = new LinkedHashMap<>();
+        ships.put(FOUR_DECKER, fourDeckerCount);
+        ships.put(THREE_DECKER, treeDeckerCount);
+        ships.put(TWO_DECKER, twoDeckerCount);
+        ships.put(ONE_DECKER, oneDeckerCount);
+        INSTANCE.initShips(ships);
+//        Scanner scanner = new Scanner(System.in);
+//        int moves = 0;
+//        while (true) {
+//            PrintField.printField();
+//            String shot = scanner.next();
+//            moves++;
+//            if (ShotResult.END_OF_GAME == shot(shot)) {
+//                break;
+//            }
+//        }
+//        PrintField.printField();
+//        System.out.println("CONGRATULATIONS!!!");
+//        System.out.println("You won in " + moves + " moves.");
+    }
+
+    private void initShips(Map<ShipSize, Integer> shipsMap) {
         cleanField();
-        shipsMap.keySet().stream()
-                .sorted(Collections.reverseOrder(Comparator.comparingInt(o -> o.DECK_COUNT)))
-                .forEach(i -> {
-                    int count = shipsMap.get(i);
-                    for (int j = 0; j < count; j++) {
-                        ships.add(new Ship(i));
-                    }
-                });
+        shipsMap.forEach((shipSize, countShips) -> {
+            for (int i = 0; i < countShips; i++) {
+                ships.add(new Ship(shipSize));
+            }
+        });
         cleanField();
     }
 
