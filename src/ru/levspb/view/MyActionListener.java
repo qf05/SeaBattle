@@ -1,5 +1,6 @@
 package ru.levspb.view;
 
+import ru.levspb.Main;
 import ru.levspb.enums.ShotResult;
 import ru.levspb.logic.GameLogic;
 
@@ -10,6 +11,7 @@ import static ru.levspb.model.Field.buttonsMap;
 
 public class MyActionListener extends AbstractAction {
 
+    private static int move_count = 0;
     private static final String IMG_BOOM_FILE = "resource\\boom.png";
 
     private static final ImageIcon IMG_BOOM = new ImageIcon(IMG_BOOM_FILE);
@@ -22,6 +24,7 @@ public class MyActionListener extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        move_count++;
         FieldButton button = buttonsMap.get(key);
         System.out.println(button.getName());
         System.out.println(button.isTransparent());
@@ -30,13 +33,14 @@ public class MyActionListener extends AbstractAction {
             case KILL:
             case HIT:
                 button.setImg(IMG_BOOM);
+                button.removeActionListener();
                 break;
             case END_OF_GAME:
-                JOptionPane.showMessageDialog(button, "YOU WIN!!!");
+                JOptionPane.showMessageDialog(button, "YOU WIN!!! \n You needed " + move_count + "moves.");
+                move_count = 0;
+                Main.startGame();
             default:
                 button.setTransparent();
         }
-        button.setEnabled(false);
-        button.setFocusPainted(false);
     }
 }

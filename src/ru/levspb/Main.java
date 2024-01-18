@@ -13,6 +13,10 @@ public class Main {
     private static int twoDecker = 3;
     private static int oneDecker = 4;
     public static void main(String[] args) {
+        startGame();
+    }
+
+    public static void startGame(){
         GameLogic.startGame(width, length, fourDecker, threeDecker, twoDecker, oneDecker);
         DesktopView.openWindow(width,length);
     }

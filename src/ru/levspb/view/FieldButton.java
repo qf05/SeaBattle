@@ -2,26 +2,29 @@ package ru.levspb.view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-import static ru.levspb.view.DesktopView.DIMENSION;
+import static ru.levspb.view.DesktopView.CELL_SIZE;
 
 public class FieldButton extends JToggleButton {
-    private static final int BUTTON_SIZE = DIMENSION.height / 20;
     private boolean transparent;
     private ImageIcon img;
+
+    private ActionListener actionListener;
 
     public FieldButton(String name) {
         super();
         this.transparent = false;
         this.setRolloverEnabled(true);
         this.setMargin(new Insets(0, 0, 0, 0));
-        this.setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
+        this.setPreferredSize(new Dimension(CELL_SIZE, CELL_SIZE));
         this.setName(name);
         this.setBackground(Color.WHITE);
         this.addComponentListener(getComponentAdapter());
-        this.addActionListener(new MyActionListener(name));
+        this.actionListener = new MyActionListener(name);
+        this.addActionListener(actionListener);
     }
 
     public void setImg(ImageIcon img) {
@@ -36,10 +39,15 @@ public class FieldButton extends JToggleButton {
     public void setTransparent() {
         this.transparent = true;
         this.setIcon(null);
-        this.setContentAreaFilled(false);
+        this.removeActionListener();
+    }
+
+    public void removeActionListener() {
         this.setOpaque(false);
-        this.setEnabled(false);
         this.setFocusPainted(false);
+        this.setContentAreaFilled(false);
+        this.removeActionListener(actionListener);
+        this.setIgnoreRepaint(true);
     }
 
     private ComponentAdapter getComponentAdapter() {
